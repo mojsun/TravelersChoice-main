@@ -10,52 +10,83 @@ const sequelize = require('../config/connection');
 // GET for homepage ('/')
 router.get('/', async (req, res) => {
   try {
-    const dbTopCountryData = await sequelize.query("SELECT ROW_NUMBER() OVER(ORDER BY AVG(rating) DESC) top, country_id, ROUND (AVG(rating),1) AS rating, COUNT(rating) AS count, COUNT(CASE rating WHEN 5 THEN 1 ELSE NULL END) AS fivestar, COUNT(CASE rating WHEN 4 THEN 1 ELSE NULL END) AS fourstar, COUNT(CASE rating WHEN 3 THEN 1 ELSE NULL END) AS threestar, COUNT(CASE rating WHEN 2 THEN 1 ELSE NULL END) AS twostar, COUNT(CASE rating WHEN 1 THEN 1 ELSE NULL END) AS onestar, ROUND (COUNT(CASE rating WHEN 5 THEN 1 ELSE NULL END)*100/COUNT(rating)) AS p_fivestar, ROUND (COUNT(CASE rating WHEN 4 THEN 1 ELSE NULL END)*100/COUNT(rating)) AS p_fourstar, ROUND (COUNT(CASE rating WHEN 3 THEN 1 ELSE NULL END)*100/COUNT(rating)) AS p_threestar, ROUND (COUNT(CASE rating WHEN 2 THEN 1 ELSE NULL END)*100/COUNT(rating)) AS p_twostar, ROUND (COUNT(CASE rating WHEN 1 THEN 1 ELSE NULL END)*100/COUNT(rating)) AS p_onestar FROM review GROUP BY country_id");          
-    // .get METHOD IS NOT NECESSARY WHEN USING RAW QUERY
-    
-    const statTop1 = dbTopCountryData[0][0];
-    const statTop2 = dbTopCountryData[0][1];
-    const statTop3 = dbTopCountryData[0][2];
+    const dbTopCountryData = await sequelize.query("SELECT ROW_NUMBER() OVER(ORDER BY AVG(rating) DESC) top, country_id, ROUND (AVG(rating),1) AS rating, COUNT(rating) AS count, COUNT(CASE rating WHEN 5 THEN 1 ELSE NULL END) AS fivestar, COUNT(CASE rating WHEN 4 THEN 1 ELSE NULL END) AS fourstar, COUNT(CASE rating WHEN 3 THEN 1 ELSE NULL END) AS threestar, COUNT(CASE rating WHEN 2 THEN 1 ELSE NULL END) AS twostar, COUNT(CASE rating WHEN 1 THEN 1 ELSE NULL END) AS onestar, ROUND (COUNT(CASE rating WHEN 5 THEN 1 ELSE NULL END)*100/COUNT(rating)) AS p_fivestar, ROUND (COUNT(CASE rating WHEN 4 THEN 1 ELSE NULL END)*100/COUNT(rating)) AS p_fourstar, ROUND (COUNT(CASE rating WHEN 3 THEN 1 ELSE NULL END)*100/COUNT(rating)) AS p_threestar, ROUND (COUNT(CASE rating WHEN 2 THEN 1 ELSE NULL END)*100/COUNT(rating)) AS p_twostar, ROUND (COUNT(CASE rating WHEN 1 THEN 1 ELSE NULL END)*100/COUNT(rating)) AS p_onestar FROM review GROUP BY country_id");
+    const rows = dbTopCountryData[0] || [];
+
+    // Handle empty database (e.g. fresh Heroku deploy before seeding)
+    if (rows.length === 0) {
+      return res.render('homepage', {
+        emptyData: true,
+        statTop1: null,
+        statTop2: null,
+        statTop3: null,
+        reviewsTop1: [],
+        reviewsTop2: [],
+        reviewsTop3: [],
+        countryTop1: null,
+        countryTop2: null,
+        countryTop3: null,
+        loggedIn: req.session.loggedIn,
+      });
+    }
+
+    const statTop1 = rows[0];
+    const statTop2 = rows[1];
+    const statTop3 = rows[2];
 
     const dbReviewTop1Data = await Review.findAll({
-      include: [{
-        model: Country
-      }],
-      where: {
-        country_id: statTop1.country_id,
-      }, 
+      include: [{ model: Country }],
+      where: { country_id: statTop1.country_id },
     });
+    const dbReviewTop2Data = statTop2
+      ? await Review.findAll({
+          include: [{ model: Country }],
+          where: { country_id: statTop2.country_id },
+        })
+      : [];
+    const dbReviewTop3Data = statTop3
+      ? await Review.findAll({
+          include: [{ model: Country }],
+          where: { country_id: statTop3.country_id },
+        })
+      : [];
 
-    const dbReviewTop2Data = await Review.findAll({
-      include: [{
-        model: Country
-      }],
-      where: {
-        country_id: statTop2.country_id,
-      }, 
+    const reviewsTop1 = dbReviewTop1Data.map((r) => r.get({ plain: true }));
+    const reviewsTop2 = dbReviewTop2Data.map((r) => r.get({ plain: true }));
+    const reviewsTop3 = dbReviewTop3Data.map((r) => r.get({ plain: true }));
+
+    const countryTop1 = reviewsTop1[0] || null;
+    const countryTop2 = reviewsTop2[0] || null;
+    const countryTop3 = reviewsTop3[0] || null;
+
+    res.render('homepage', {
+      emptyData: false,
+      statTop1,
+      statTop2: statTop2 || null,
+      statTop3: statTop3 || null,
+      reviewsTop1,
+      reviewsTop2,
+      reviewsTop3,
+      countryTop1,
+      countryTop2,
+      countryTop3,
+      loggedIn: req.session.loggedIn,
     });
-
-    const dbReviewTop3Data = await Review.findAll({
-      include: [{
-        model: Country
-      }],
-      where: {
-        country_id: statTop3.country_id,
-      }, 
-    });
-
-    const reviewsTop1 = dbReviewTop1Data.map((review) => review.get({ plain: true }));
-    const reviewsTop2 = dbReviewTop2Data.map((review) => review.get({ plain: true }));
-    const reviewsTop3 = dbReviewTop3Data.map((review) => review.get({ plain: true }));
-
-    const countryTop1 = reviewsTop1[0];
-    const countryTop2 = reviewsTop2[0];
-    const countryTop3 = reviewsTop3[0];
-
-    res.render('homepage', { statTop1, statTop2, statTop3, reviewsTop1, reviewsTop2, reviewsTop3, countryTop1, countryTop2, countryTop3, loggedIn: req.session.loggedIn });
   } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+    console.error(err);
+    res.status(500).render('homepage', {
+      emptyData: true,
+      statTop1: null,
+      statTop2: null,
+      statTop3: null,
+      reviewsTop1: [],
+      reviewsTop2: [],
+      reviewsTop3: [],
+      countryTop1: null,
+      countryTop2: null,
+      countryTop3: null,
+      loggedIn: req.session && req.session.loggedIn,
+    });
   }
 });
 

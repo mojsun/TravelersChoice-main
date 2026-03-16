@@ -11,7 +11,15 @@
 </style>
 
 <div class="container-fluid bg-light text-center py-5">
-  <h1 class="mb-5 display-4 homepage-z-index">Top 3 Rating Destinations</h1> 
+  <h1 class="mb-5 display-4 homepage-z-index">Top 3 Rating Destinations</h1>
+  {{#if emptyData}}
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <p class="lead">No destinations with reviews yet. Sign up or log in to add the first review!</p>
+      <p class="text-muted">You can also run <code>heroku run npm run seed</code> to load sample data.</p>
+    </div>
+  </div>
+  {{else}}
   <div class="row">
     <div class="col-md-4 home-card-hover">
       <div class="card h-100 border-0 shadow-sm">
@@ -37,6 +45,7 @@
       </div>
     </div>
     
+    {{#if statTop2}}
     <div class="col-md-4 home-card-hover">
       <div class="card h-100 border-0 shadow-sm">
         <a href="/country/{{statTop2.country_id}}">
@@ -60,7 +69,8 @@
         </div>
       </div>
     </div>
-    
+    {{/if}}
+    {{#if statTop3}}
     <div class="col-md-4 home-card-hover">
       <div class="card h-100 border-0 shadow-sm">
         <a href="/country/{{statTop3.country_id}}">
@@ -84,34 +94,39 @@
         </div>
       </div>
     </div>
+    {{/if}}
   </div>
+  {{/if}}
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+  {{#unless emptyData}}
   const c1 = document.getElementById('chart1');
   const c2 = document.getElementById('chart2'); 
   const c3 = document.getElementById('chart3');
 
-  new Chart(c1, {
-    type: 'bar',
-    data: {
-      labels: ['★★★★★', '★★★★☆', '★★★☆☆', '★★☆☆☆', '★☆☆☆☆'],
-      datasets: [{
-        label: 'Rating %',
-        data: [{{statTop1.p_fivestar}}, {{statTop1.p_fourstar}}, {{statTop1.p_threestar}}, {{statTop1.p_twostar}}, {{statTop1.p_onestar}}],
-        borderWidth: 1,
-      }]
-    },
-    options: {
-      scales: {
-        x: {max: 100}
+  if (c1) {
+    new Chart(c1, {
+      type: 'bar',
+      data: {
+        labels: ['★★★★★', '★★★★☆', '★★★☆☆', '★★☆☆☆', '★☆☆☆☆'],
+        datasets: [{
+          label: 'Rating %',
+          data: [{{statTop1.p_fivestar}}, {{statTop1.p_fourstar}}, {{statTop1.p_threestar}}, {{statTop1.p_twostar}}, {{statTop1.p_onestar}}],
+          borderWidth: 1,
+        }]
       },
-      indexAxis: 'y',
-    }
-  });
-
+      options: {
+        scales: {
+          x: {max: 100}
+        },
+        indexAxis: 'y',
+      }
+    });
+  }
+  if (c2) {
   new Chart(c2, {
     type: 'bar',
     data: {
@@ -129,7 +144,8 @@
       indexAxis: 'y',
     }
   });
-
+  }
+  if (c3) {
     new Chart(c3, {
     type: 'bar',
     data: {
@@ -147,5 +163,6 @@
       indexAxis: 'y',
     }
   });
-
+  }
+  {{/unless}}
 </script>
