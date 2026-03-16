@@ -1,0 +1,151 @@
+<video autoplay muted loop id="homepage-bg-vid">
+  <source src="./videos/qatar-airways-129855.mp4" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
+
+<style>
+  canvas {
+    z-index: 1;
+    position: relative;
+  }
+</style>
+
+<div class="container-fluid bg-light text-center py-5">
+  <h1 class="mb-5 display-4 homepage-z-index">Top 3 Rating Destinations</h1> 
+  <div class="row">
+    <div class="col-md-4 home-card-hover">
+      <div class="card h-100 border-0 shadow-sm">
+        <a href="/country/{{statTop1.country_id}}">
+          <img src="{{countryTop1.country.photo}}" class="card-img-top img-fluid">
+        </a>
+        <div class="card-body">
+          <h2 class="card-title h5 mb-3">{{countryTop1.country.name}}</h2>
+          <p class="card-text mb-3">{{countryTop1.country.description}}</p>
+          <h3 class="card-title h6 mb-3">Users rating: {{statTop1.rating}} {{rating_stars statTop1.rating}}</h3>
+          <div>
+            <canvas id="chart1">
+              <p>Rating chart for No.1 country</p> 
+            </canvas>
+          </div>
+          <div class="homepage-overflow">
+            {{#each reviewsTop1 as |top1|}}
+            {{> homepage-reviews}}
+          {{/each}}
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 home-card-hover">
+      <div class="card h-100 border-0 shadow-sm">
+        <a href="/country/{{statTop2.country_id}}">
+          <img src="{{countryTop2.country.photo}}" class="card-img-top img-fluid">
+        </a>
+        <div class="card-body">
+          <h2 class="card-title h5 mb-3">{{countryTop2.country.name}}</h2>
+          <p class="card-text mb-3">{{countryTop2.country.description}}</p>
+          <h3 class="card-title h6 mb-3">Users rating: {{statTop2.rating}} {{rating_stars statTop2.rating}}</h3>
+          <div>
+            <canvas id="chart2">
+              <p>Rating chart for No.2 country</p> 
+            </canvas>
+          </div>
+          <div class="homepage-overflow">
+            {{#each reviewsTop2 as |top2|}}
+            {{> homepage-reviews}}
+          {{/each}}
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 home-card-hover">
+      <div class="card h-100 border-0 shadow-sm">
+        <a href="/country/{{statTop3.country_id}}">
+          <img src="{{countryTop3.country.photo}}" class="card-img-top img-fluid">
+        </a>
+        <div class="card-body">
+          <h2 class="card-title h5 mb-3">{{countryTop3.country.name}}</h2>
+          <p class="card-text mb-3">{{countryTop3.country.description}}</p>
+          <h3 class="card-title h6 mb-3">Users rating: {{statTop3.rating}} {{rating_stars statTop3.rating}}</h3>
+          <div>
+            <canvas id="chart3">
+              <p>Rating chart for No.3 country</p> 
+            </canvas>
+          </div>
+          <div class="homepage-overflow">
+            {{#each reviewsTop3 as |top3|}}
+            {{> homepage-reviews}}
+          {{/each}}
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const c1 = document.getElementById('chart1');
+  const c2 = document.getElementById('chart2'); 
+  const c3 = document.getElementById('chart3');
+
+  new Chart(c1, {
+    type: 'bar',
+    data: {
+      labels: ['★★★★★', '★★★★☆', '★★★☆☆', '★★☆☆☆', '★☆☆☆☆'],
+      datasets: [{
+        label: 'Rating %',
+        data: [{{statTop1.p_fivestar}}, {{statTop1.p_fourstar}}, {{statTop1.p_threestar}}, {{statTop1.p_twostar}}, {{statTop1.p_onestar}}],
+        borderWidth: 1,
+      }]
+    },
+    options: {
+      scales: {
+        x: {max: 100}
+      },
+      indexAxis: 'y',
+    }
+  });
+
+  new Chart(c2, {
+    type: 'bar',
+    data: {
+      labels: ['★★★★★', '★★★★☆', '★★★☆☆', '★★☆☆☆', '★☆☆☆☆'],
+      datasets: [{
+        label: 'Rating %',
+        data: [{{statTop2.p_fivestar}}, {{statTop2.p_fourstar}}, {{statTop2.p_threestar}}, {{statTop2.p_twostar}}, {{statTop2.p_onestar}}],
+        borderWidth: 1,
+      }]
+    },
+    options: {
+      scales: {
+        x: {max: 100}
+      },
+      indexAxis: 'y',
+    }
+  });
+
+    new Chart(c3, {
+    type: 'bar',
+    data: {
+      labels: ['★★★★★', '★★★★☆', '★★★☆☆', '★★☆☆☆', '★☆☆☆☆'],
+      datasets: [{
+        label: 'Rating %',
+        data: [{{statTop3.p_fivestar}}, {{statTop3.p_fourstar}}, {{statTop3.p_threestar}}, {{statTop3.p_twostar}}, {{statTop3.p_onestar}}],
+        borderWidth: 1,
+      }]
+    },
+    options: {
+      scales: {
+        x: {max: 100}
+      },
+      indexAxis: 'y',
+    }
+  });
+
+</script>

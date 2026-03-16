@@ -1,0 +1,54 @@
+<video autoplay muted loop id="homepage-bg-vid">
+  <source src="../../videos/mountains-56592.mp4" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow-lg border-0 rounded-lg mt-5">
+        <div class="card-header"><h3 class="text-center font-weight-light my-4">Create Review</h3></div>
+        
+        <div class="card-body">
+          <h3 class="card-body-h3 text-center my-2">Post your review on this website!</h3>
+
+          <form class="form create-form">
+
+            <div class="form-group my-2">
+              <label class="small country-label mt-2">Choose a country:</label>
+               <select id="input-country">
+                 {{#each countries as |country|}}
+                 {{> dashboard-countries}}
+                 {{/each}}
+               </select><br>
+            </div>
+            
+            <div class="form-group my-2">
+              <label class="country-label">Rating: 5 to 1</label>
+              <select id="input-rating">
+                <option value=5>5 - ★★★★★</option>
+                <option value=4>4 - ★★★★☆</option>
+                <option value=3>3 - ★★★☆☆</option>
+                <option value=2>2 - ★★☆☆☆</option>
+                <option value=1>1 - ★☆☆☆☆</option>
+              </select><br>
+            </div>
+            
+            <div class="form-group my-2">
+              <label class="small country-label">Review</label>
+              <input class="form-control py-4" type="Review" id="input-review" placeholder="Enter a Review" />
+            </div>
+
+            <div class="form-group my-2 mb-0 text-center">
+              <button class="btn btn-primary btn-block " type="submit">Submit</button>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="../../js/create-review.js"></script> 
+
+

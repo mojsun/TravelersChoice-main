@@ -1,0 +1,67 @@
+<video autoplay muted loop id="homepage-bg-vid">
+  <source src="../../videos/alps-47172.mp4" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
+<section class="edit_review_section">
+  <div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-7">
+        <div class="card shadow-lg border-0 rounded-lg mt-5">
+          <div class="card-header bg-primary text-white">
+            <h2 class="text-center font-weight-light my-4">Update / Delete Review</h2>
+          </div>
+          <div class="card-body">
+            <div class="mb-4 p-2 text-white bg-primary border rounded ">
+              <h4 class="mb-2 text-center">This is your original review!</h4>
+              <h5 class="mb-3">Country: {{review.country.name}}</h5>
+              <h5 class="mb-3">Rating: {{review.rating}} - {{rating_stars review.rating}}</h5>
+              <h5>Review: {{review.content}}</h5>
+              <br>
+            </div>
+
+            <div class="mb-4 p-2 text-white bg-secondary border rounded">
+              <h4 class="mb-2 text-center">🖊️ Would you like to update this review?</h4>
+              <form class="update-form">
+                <div class="form-group">
+                  <label for="input-country" class="my-1">Choose a country:</label>
+                  <select class="form-control" id="input-country">
+                    {{#each countries as |country|}}
+                    {{> dashboard-countries}}
+                    {{/each}}
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="input-rating" class="my-1">Rating: 5 to 1</label>
+                  <select class="form-control" id="input-rating">
+                    <option value=5>5 - ★★★★★</option>
+                    <option value=4>4 - ★★★★☆</option>
+                    <option value=3>3 - ★★★☆☆</option>
+                    <option value=2>2 - ★★☆☆☆</option>
+                    <option value=1>1 - ★☆☆☆☆</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="input-review" class="my-1">Review</label>
+                  <textarea class="form-control" id="input-review" name="" rows="2" cols="50"></textarea>
+                </div>
+                <div class="form-group mt-4 mb-0 text-center">
+                  <button class="btn btn-light btn-block" type="submit">Save</button>
+                </div>
+              </form>
+            </div>
+
+            <div id="delete-section" class="delete-section p-2 text-white bg-danger border rounded">
+              <h4 class="mb-2 text-center">🗑️ Would you like to delete this review?</h4>
+              <form class="delete-form">
+                <div class="form-group text-center">
+                  <button class="btn btn-light btn-block" type="submit">Delete</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script src="../../js/edit-review.js"></script>

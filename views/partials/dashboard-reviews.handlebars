@@ -1,0 +1,16 @@
+{{!-- <section class="reviews">
+  <h3 class="reviews-details">Country: {{country.name}}</h3>
+  <h3 class="reviews-details">Rating: {{rating}} {{rating_stars rating}}</h3>
+  <h3 class="reviews-details">Review: {{content}}</h3>
+  <button>
+    <a href="/dashboard/review/{{id}}">🗑️ Edit/Delete this review</a>
+  </button>
+</section> --}}
+<section class="reviews card mb-3 p-3">
+  <h3 class="reviews-details">Country: {{country.name}}</h3>
+  <h3 class="reviews-details">Rating: {{rating}} {{rating_stars rating}}</h3>
+  <h3 class="reviews-details">Review: {{content}}</h3>
+  <button class="btn btn-primary">
+    <a class="text-white link-review-remove-edit-line" href="/dashboard/review/{{id}}">Edit/Delete this review</a>
+  </button>
+</section>
