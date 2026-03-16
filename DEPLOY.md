@@ -20,47 +20,133 @@ git push -u origin main
 
 ---
 
-## 2. Deploy on Heroku
+## 2. Deploy on Heroku (step-by-step)
 
-### Prerequisites
+### Step 0: Install Heroku CLI and log in (one-time)
 
-- [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) installed and logged in (`heroku login`)
-- MySQL database: Heroku uses **JawsDB MySQL** (add-on) for MySQL apps
-
-### Steps
-
-1. **Create the app**
+1. **Install the Heroku CLI**  
+   - Mac (Homebrew): run in Terminal: `brew tap heroku/brew && brew install heroku`  
+   - Or download from: https://devcenter.heroku.com/articles/heroku-cli  
+2. **Log in**: open Terminal and run:
    ```bash
-   heroku create your-app-name
+   heroku login
    ```
-   (Or `heroku create` to get a random name.)
+   A browser window will open; log in with your Heroku account (or create one at heroku.com).
 
-2. **Add JawsDB MySQL**
-   - In [Heroku Dashboard](https://dashboard.heroku.com/) → your app → **Resources** → **Find more add-ons** → search **JawsDB MySQL** → add it (e.g. free tier).
-   - Heroku will set `JAWSDB_URL` automatically; your `config/connection.js` already uses it.
+---
 
-3. **Set session secret**
-   - Dashboard → your app → **Settings** → **Reveal Config Vars**
-   - Add: `SESSION_SECRET` = a long random string (e.g. from `openssl rand -hex 32`)
+### Step 1: Create a Heroku app (from your project folder)
 
-4. **Deploy from Git**
+1. Open Terminal.
+2. Go to your project folder, for example:
    ```bash
-   git push heroku main
+   cd /Users/aminforout/Desktop/Software/TravelersChoice-main
    ```
-   If your branch is not `main`, use e.g. `git push heroku your-branch:main`.
+3. Run **one** of these:
+   - To pick your own name (e.g. `travelers-choice-amin`):
+     ```bash
+     heroku create travelers-choice-amin
+     ```
+   - To let Heroku choose a random name:
+     ```bash
+     heroku create
+     ```
+4. You’ll see a URL like `https://travelers-choice-amin.herokuapp.com`. That’s your app’s address.
 
-5. **Run migrations / seed (optional)**
-   - Sequelize will sync models on first start (`sequelize.sync({ force: false })`). To seed data:
+---
+
+### Step 2: Add a MySQL database (JawsDB) in the Heroku website
+
+Your app needs a database. Heroku gives you one via an “add-on” called JawsDB.
+
+1. Go to **https://dashboard.heroku.com** and log in.
+2. Click your app name (e.g. **travelers-choice-amin**).
+3. Click the **“Resources”** tab at the top.
+4. In the “Add-ons” section, click **“Find more add-ons”** (or the search box) and type **JawsDB**.
+5. Click **“JawsDB MySQL”** → choose the **free** plan (Kitefin) → **“Submit Order Form”** or **“Provision”**.
+6. Done. Heroku will automatically add a variable called `JAWSDB_URL` to your app (your code already uses it).
+
+---
+
+### Step 3: Add SESSION_SECRET in the Heroku website
+
+Your app needs a secret key for keeping user sessions secure.
+
+1. **Create a random secret**  
+   In Terminal run:
    ```bash
-   heroku run npm run seed
+   openssl rand -hex 32
    ```
+   Copy the long string it prints (e.g. `a1b2c3d4e5f6...`). You’ll paste it in the next step.
 
-6. **Open the app**
-   ```bash
-   heroku open
-   ```
+2. **Put it in Heroku**  
+   - On https://dashboard.heroku.com, open your app.
+   - Click the **“Settings”** tab.
+   - Click **“Reveal Config Vars”**.
+   - Under “Config Vars”, set:
+     - **KEY**: `SESSION_SECRET`
+     - **VALUE**: paste the long string from step 1
+   - Click **“Add”** (or Save).
 
-### Fixes already in this project
+---
+
+### Step 4: Push your code to Heroku (deploy)
+
+From your project folder in Terminal:
+
+```bash
+git push heroku main
+```
+
+If your branch is named something else (e.g. `master`), use:
+
+```bash
+git push heroku master:main
+```
+
+Heroku will build and start your app. Wait until it says “Verifying deploy... done.”
+
+---
+
+### Step 5 (optional): Add sample data
+
+To load the seed data (sample countries/reviews) on Heroku, run once:
+
+```bash
+heroku run npm run seed
+```
+
+You can skip this if you don’t need sample data.
+
+---
+
+### Step 6: Open your app in the browser
+
+In Terminal run:
+
+```bash
+heroku open
+```
+
+Your browser will open your live app (e.g. `https://travelers-choice-amin.herokuapp.com`).
+
+---
+
+### Summary: order of steps
+
+| Order | What to do | Where |
+|-------|------------|--------|
+| 0 | Install Heroku CLI, run `heroku login` | Terminal (one-time) |
+| 1 | `heroku create your-app-name` | Terminal, in project folder |
+| 2 | Add JawsDB MySQL add-on | Heroku Dashboard → Resources |
+| 3 | Add Config Var `SESSION_SECRET` | Heroku Dashboard → Settings → Config Vars |
+| 4 | `git push heroku main` | Terminal |
+| 5 | (Optional) `heroku run npm run seed` | Terminal |
+| 6 | `heroku open` | Terminal |
+
+---
+
+### If something goes wrong
 
 - **Port**: `server.js` uses `process.env.PORT || 3001` (Heroku sets `PORT`).
 - **Database**: `config/connection.js` uses `JAWSDB_URL` when set (Heroku + JawsDB).

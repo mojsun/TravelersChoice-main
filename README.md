@@ -1,12 +1,5 @@
 # TravelersChoice
 
-## Members
-
-Shayne Whittle
-
-Shohei Mochizuki
-
-Mozhdeh Khorashahi
 
 ## Description
 
@@ -60,11 +53,6 @@ A travel destination review website is a platform where people can share their e
 ![image](https://user-images.githubusercontent.com/121307266/223154896-00dca58f-d53b-4af5-ad59-70898bb7ac2b.png)
 ![image](https://user-images.githubusercontent.com/121307266/223154966-3ff15527-e2b0-46b0-962e-8f76ba1b305c.png)
 
-## Credits
-
-To team members: shayne , Moji and shohei
-
-Also the professors from Toronto Bootcamp
 
 ## License
 
@@ -112,30 +100,3 @@ session
 
 MVC
 
-## How to Contribute
-
-N/A
-
-## Tests
-
-N/A
-
-## Questions
-
-If you have any questions you can reach us by our email address and our Github pages.
-
-Github pages:
-
-https://github.com/shaynefw
-
-https://github.com/shohei-mochizuki
-
-https://github.com/mojsun
-
-email address:
-
-shaynefw@gmail.com
-
-shohei.mochizuki.jp@gmail.com
-
-m.khorashahi7@gmail.com
