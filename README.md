@@ -12,9 +12,6 @@ A travel destination review website is a platform where people can share their e
 - [Credits](#credits)
 - [License](#license)
 - [Features](#feature)
-- [How to contribute](#Howtocontribute)
-- [Tests](#tests)
-- [Questions](#questions)
 
 ## Installation
 
@@ -50,8 +47,7 @@ A travel destination review website is a platform where people can share their e
 13. if the user wants to know more about us team who made this website he/she can click on our github pages to know more about.
 
 ![image](https://user-images.githubusercontent.com/121307266/223154808-03533124-135f-444a-b969-620b85cb13de.png)
-![image](https://user-images.githubusercontent.com/121307266/223154896-00dca58f-d53b-4af5-ad59-70898bb7ac2b.png)
-![image](https://user-images.githubusercontent.com/121307266/223154966-3ff15527-e2b0-46b0-962e-8f76ba1b305c.png)
+
 
 
 ## License

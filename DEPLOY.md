@@ -148,17 +148,9 @@ Your browser will open your live app (e.g. `https://travelers-choice-amin.heroku
 
 ### If something goes wrong
 
-- **Port**: `server.js` uses `process.env.PORT || 3001` (Heroku sets `PORT`).
-- **Database**: `config/connection.js` uses `JAWSDB_URL` when set (Heroku + JawsDB).
-- **Session secret**: Uses `SESSION_SECRET` env var in production (set in Heroku Config Vars).
-- **Procfile**: `web: npm start` so Heroku runs the app correctly.
-- **Node**: `package.json` has `engines.node` for a consistent Node version.
-
-### If something goes wrong
-
-- **App crash**: `heroku logs --tail` to see errors.
-- **DB connection**: Ensure JawsDB add-on is attached and `JAWSDB_URL` exists in Config Vars.
-- **503 / “Application error”**: Check logs; often missing env var or DB not ready.
+- **App crash or error page**: In Terminal run `heroku logs --tail` to see what went wrong.
+- **Database connection errors**: Make sure you added the JawsDB MySQL add-on (Step 2) and that `JAWSDB_URL` appears under Config Vars.
+- **503 or “Application error”**: Usually a missing env var or the app crashed. Check logs with `heroku logs --tail` and confirm `SESSION_SECRET` is set (Step 3).
 
 ---
 
