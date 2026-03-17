@@ -15,9 +15,8 @@ A travel destination review website is a platform where people can share their e
 
 ## Installation
 
-- [Project repo](https://github.com/shaynefw/TravelersChoice)
-- [Project deployed link](https://travelerschoice.herokuapp.com/)
-- [Project Video Demo]()
+- [Project repo](https://github.com/mojsun/TravelersChoice-main)
+- [Project deployed link](https://travelers-choice-amin-803de6cef531.herokuapp.com/)
 
 ## Usage
 
