@@ -15,8 +15,11 @@
   {{#if emptyData}}
   <div class="row justify-content-center">
     <div class="col-md-8">
-      <p class="lead">No destinations with reviews yet. Sign up or log in to add the first review!</p>
-      <p class="text-muted">You can also run <code>heroku run npm run seed</code> to load sample data.</p>
+      <div class="card shadow-sm border-0 p-4 bg-white">
+        <h2 class="h5 mb-3">No destinations with reviews yet</h2>
+        <p class="text-dark mb-2">Sign up or log in to add the first review!</p>
+        <p class="text-muted small mb-0">To load sample data on Heroku, run in Terminal: <code>heroku run npm run seed</code></p>
+      </div>
     </div>
   </div>
   {{else}}
